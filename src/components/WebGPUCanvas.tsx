@@ -10,7 +10,12 @@ const WebGpuCanvas = ({ children }: { children: React.ReactNode }) => {
   return (
     <Canvas
       performance={{ min: 0.5, debounce: 300 }}
-      camera={{ position: [0, 0, 3], far: 25 }}
+      camera={{
+        fov: 45,
+        near: 0.1,
+        far: 200,
+        position: [2.5, 4, 6],
+      }}
       gl={async (props) => {
         const renderer = new THREE.WebGPURenderer({
           ...(props as WebGPURendererParameters),
