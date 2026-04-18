@@ -40,7 +40,10 @@ type ActionName =
 
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
-const PlayerModel = (props: JSX.IntrinsicElements["group"]) => {
+const PlayerModel = (
+  props: JSX.IntrinsicElements["group"],
+  shadow: boolean = true,
+) => {
   const group = useRef<THREE.Group | null>(null);
 
   const { nodes, materials } = useGLTF(
@@ -72,11 +75,13 @@ const PlayerModel = (props: JSX.IntrinsicElements["group"]) => {
           geometry={nodes.Mannequin_Medium_ArmLeft.geometry}
           material={materials.Character_Material}
           skeleton={nodes.Mannequin_Medium_ArmLeft.skeleton}
+          castShadow={shadow}
         />
         <skinnedMesh
           geometry={nodes.Mannequin_Medium_ArmRight.geometry}
           material={materials.Character_Material}
           skeleton={nodes.Mannequin_Medium_ArmRight.skeleton}
+          castShadow={shadow}
         />
         <skinnedMesh
           geometry={nodes.Mannequin_Medium_Body.geometry}
@@ -87,16 +92,19 @@ const PlayerModel = (props: JSX.IntrinsicElements["group"]) => {
           geometry={nodes.Mannequin_Medium_Head.geometry}
           material={materials.Character_Material}
           skeleton={nodes.Mannequin_Medium_Head.skeleton}
+          castShadow={shadow}
         />
         <skinnedMesh
           geometry={nodes.Mannequin_Medium_LegLeft.geometry}
           material={materials.Character_Material}
           skeleton={nodes.Mannequin_Medium_LegLeft.skeleton}
+          castShadow={shadow}
         />
         <skinnedMesh
           geometry={nodes.Mannequin_Medium_LegRight.geometry}
           material={materials.Character_Material}
           skeleton={nodes.Mannequin_Medium_LegRight.skeleton}
+          castShadow={shadow}
         />
         <primitive object={nodes.root} />
       </group>
