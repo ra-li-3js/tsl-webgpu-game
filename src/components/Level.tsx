@@ -5,7 +5,7 @@ import { MeshBasicNodeMaterial } from "three/webgpu";
 import { fragmentShader as fresnelFragmentShader } from "./shaders/fresnel.ts";
 import { RoundedBoxGeometry } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { Fn, vec3, float } from "three/tsl";
 import { uTime } from "./shaders/uniforms.ts";
@@ -14,6 +14,8 @@ import {
   vertexShader as holographicVertexShader,
   fragmentShader as holographicFragmentShader,
 } from "./shaders/holographic.ts";
+import { Crown } from "./assets/Crown.tsx";
+import { mulberry32 } from "../utils.ts";
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 256, 256);
 
@@ -213,16 +215,80 @@ function BlockAxe({ position = [0, 0, 0] }: BlockProps) {
   );
 }
 
-const Level = () => {
+function BlockEnd({ position = [0, 0, 0] }: BlockProps) {
+  const crown = useRef<RapierRigidBody | null>(null);
+  const [speed, _] = useState(
+    () => (Math.random() + 0.2) * (Math.random() < 0.5 ? -1 : 1),
+  );
+
+  useFrame((state) => {
+    if (!crown.current) return;
+
+    const time = state.clock.getElapsedTime();
+
+    const rotation = new THREE.Quaternion();
+    rotation.setFromEuler(new THREE.Euler(0, time * speed, 0));
+    // console.log(rotation);
+
+    crown.current.setNextKinematicRotation(rotation);
+  });
+
+  return (
+    <group position={position}>
+      <RigidBody type={"fixed"} restitution={0.2} friction={0}>
+        <mesh
+          geometry={boxGeometry}
+          material={glassMaterial}
+          position={[0, 0, 0]}
+          scale={[4, 0.2, 4]}
+          receiveShadow
+        />
+      </RigidBody>
+      <RigidBody
+        ref={crown}
+        type={"kinematicPosition"}
+        colliders={"trimesh"}
+        position={[0, 0.25, 0]}
+        restitution={0.2}
+        friction={0}
+      >
+        <Crown scale={0.6} />
+      </RigidBody>
+    </group>
+  );
+}
+
+const Level = ({
+  count = 5,
+  types = [BlockSpinner, BlockAxe, BlockLimbo],
+  seed = 2,
+}) => {
+  const blocks = useMemo(() => {
+    const blocks = [];
+    const rand = mulberry32(seed);
+    console.log(rand());
+
+    for (let i = 0; i < count; i++) {
+      const random = rand();
+      const type = types[Math.floor(random * types.length)];
+      blocks.push(type);
+    }
+    return blocks;
+  }, [count, types, seed]);
+  // console.log(blocks);
+
   useFrame((state) => {
     uTime.value = state.clock.getElapsedTime();
   });
   return (
     <>
       <BlockStart position={[0, 0, 0]} />
-      <BlockSpinner position={[0, 0, -4]} />
-      <BlockLimbo position={[0, 0, -8]} />
-      <BlockAxe position={[0, 0, -12]} />
+
+      {blocks.map((Block, i) => (
+        <Block key={i} position={[0, 0, -(i + 1) * 4]} />
+      ))}
+
+      <BlockEnd position={[0, 0, -(count + 1) * 4]} />
     </>
   );
 };
