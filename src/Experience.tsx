@@ -8,7 +8,7 @@ const Experience = () => {
   return (
     <>
       <WebGPUCanvas>
-        <color args={["#05475c"]} attach="background" />
+        <color args={["#000809"]} attach="background" />
 
         <Physics debug>
           <Lights />
