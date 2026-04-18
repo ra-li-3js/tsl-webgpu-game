@@ -111,6 +111,11 @@ export const fragmentShader = /*@__PURE__*/ Fn(
 
     // Final color
 
+    // Base
+    const baseColor = uColor.mul(0.4).toVar();
+
+    vec3(uColor).addAssign(baseColor);
+
     // gl_FragColor.assign(vec4(vec3(uColor), holographic));
     return vec4(vec3(uColor), holographic);
   },
