@@ -38,10 +38,18 @@ const Player = () => {
 
     const origin = body.current.translation();
     // console.log(origin);
-    origin.y -= 0.31;
+    origin.y -= 0.61;
     const direction = { x: 0, y: -1, z: 0 };
     const ray = new rapier.Ray(origin, direction);
-    const hit = world.castRay(ray, 10, true);
+    const hit = world.castRay(
+      ray,
+      0.2,
+      true,
+      undefined,
+      undefined,
+      undefined,
+      body.current,
+    );
     // console.log(hit);
 
     if (hit && hit.timeOfImpact < 0.15) {
@@ -161,7 +169,7 @@ const Player = () => {
         ref={body}
         canSleep={false}
         colliders={false}
-        enabledRotations={[false, true, false]}
+        enabledRotations={[false, false, false]}
         restitution={0.2}
         friction={0}
         position={[0, 1, 0]}
