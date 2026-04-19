@@ -17,7 +17,7 @@ import {
 import { Crown } from "./assets/Crown.tsx";
 import { mulberry32 } from "../utils.ts";
 
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 256, 256);
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 16);
 
 // const floor1Material = new THREE.MeshStandardMaterial({ color: "limegreen" });
 // const floor2Material = new THREE.MeshStandardMaterial({ color: "greenyellow" });

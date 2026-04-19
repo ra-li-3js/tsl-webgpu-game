@@ -4,8 +4,13 @@ import Lights from "./components/Lights.tsx";
 import Level from "./components/Level.tsx";
 import Player from "./components/Player.tsx";
 import { KeyboardControls } from "@react-three/drei";
+import Interface from "./Interface.tsx";
+import useGame from "./stores/useGame.ts";
 
 const Experience = () => {
+  const blocksCount = useGame((state) => state.blocksCount);
+  const blockSeed = useGame((state) => state.blockSeed);
+
   return (
     <>
       <KeyboardControls
@@ -22,10 +27,11 @@ const Experience = () => {
 
           <Physics debug={false}>
             <Lights />
-            <Level />
+            <Level count={blocksCount} seed={blockSeed} />
             <Player />
           </Physics>
         </WebGPUCanvas>
+        <Interface />
       </KeyboardControls>
     </>
   );
