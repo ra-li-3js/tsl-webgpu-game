@@ -4,7 +4,7 @@ I copy-pasted the types and jsx return from the base model, adding the animation
 */
 
 import { type JSX, useEffect, useRef } from "react";
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { useAnimations, useGLTF, useKeyboardControls } from "@react-three/drei";
 
 import * as THREE from "three";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -24,8 +24,8 @@ type GLTFResult = GLTF & {
   };
 };
 
-// @ts-ignore
-type ActionName =
+/*
+type MovementActionName =
   | "Jump_Full_Long"
   | "Jump_Full_Short"
   | "Jump_Idle"
@@ -38,7 +38,26 @@ type ActionName =
   | "Walking_B"
   | "Walking_C";
 
-// type GLTFActions = Record<ActionName, THREE.AnimationAction>;
+type GeneralActionName =
+  | 'Death_A'
+  | 'Death_A_Pose'
+  | 'Death_B'
+  | 'Death_B_Pose'
+  | 'Hit_A'
+  | 'Hit_B'
+  | 'Idle_A'
+  | 'Idle_B'
+  | 'Interact'
+  | 'PickUp'
+  | 'Spawn_Air'
+  | 'Spawn_Ground'
+  | 'T-Pose'
+  | 'Throw'
+  | 'Use_Item'
+ */
+
+// type GLTFActions = Record<GeneralActionName, THREE.AnimationAction>
+// type GLTFActions = Record<MovementActionName, THREE.AnimationAction>;
 
 const PlayerModel = (
   props: JSX.IntrinsicElements["group"],
@@ -46,28 +65,53 @@ const PlayerModel = (
 ) => {
   const group = useRef<THREE.Group | null>(null);
 
+  const isMoving = useKeyboardControls(
+    (state) =>
+      state.forward || state.backward || state.leftward || state.rightward,
+  );
+  const isJumping = useKeyboardControls((state) => state.jump);
+
   const { nodes, materials } = useGLTF(
     "/models/player/Mannequin_Medium.glb",
   ) as unknown as GLTFResult;
 
-  const { animations } = useGLTF("/models/player/Rig_Medium_MovementBasic.glb");
+  const { animations: movementAnims } = useGLTF(
+    "/models/player/Rig_Medium_MovementBasic.glb",
+  );
+  const { animations: generalAnims } = useGLTF(
+    "/models/player/Rig_Medium_General.glb",
+  );
+
+  const animations = [...movementAnims, ...generalAnims];
 
   const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
-    const actionNames = Object.keys(actions);
+    const idleAction = actions["Idle_B"];
+    const runAction = actions["Running_A"];
+    const jumpAction = actions["Jump_Full_Short"];
 
-    if (actionNames.length === 0) return;
-
-    const run = actions[actionNames[5]];
-    run?.reset().fadeIn(0.6).play();
+    if (isJumping) {
+      // 1. Highest Priority: Jumping
+      jumpAction?.reset().fadeIn(0.1).play();
+      runAction?.fadeOut(0.3);
+      idleAction?.fadeOut(0.3);
+    } else if (isMoving) {
+      runAction?.reset().fadeIn(0.2).play();
+      jumpAction?.fadeOut(0.2);
+      idleAction?.reset().fadeOut(0.2).play();
+    } else {
+      idleAction?.reset().fadeIn(0.2).play();
+      runAction?.reset().fadeOut(0.2).play();
+      jumpAction?.fadeOut(0.2);
+    }
 
     return () => {
-      if (actionNames.length > 0) {
-        run?.fadeOut(0.6);
-      }
+      idleAction?.stop();
+      runAction?.stop();
+      jumpAction?.stop();
     };
-  }, [actions]);
+  }, [isMoving, isJumping, actions]);
   return (
     <>
       <group ref={group} {...props} dispose={null}>
@@ -114,5 +158,6 @@ const PlayerModel = (
 
 useGLTF.preload("/models/player/Mannequin_Medium.glb");
 useGLTF.preload("/models/player/Rig_Medium_MovementBasic.glb");
+useGLTF.preload("/models/player/Rig_Medium_General.glb");
 
 export default PlayerModel;
