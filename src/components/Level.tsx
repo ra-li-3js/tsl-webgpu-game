@@ -266,7 +266,7 @@ const Level = ({
   const blocks = useMemo(() => {
     const blocks = [];
     const rand = mulberry32(seed);
-    console.log(rand());
+    // console.log(rand());
 
     for (let i = 0; i < count; i++) {
       const random = rand();
