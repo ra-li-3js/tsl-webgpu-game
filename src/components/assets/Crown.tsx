@@ -24,9 +24,11 @@ type GLTFResult = GLTF & {
   };
 };
 
+const baseUrl = import.meta.env.BASE_URL;
+
 export function Crown(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF(
-    "/models/crown/fall_guys_crown.glb",
+    `${baseUrl}/models/crown/fall_guys_crown.glb`,
   ) as unknown as GLTFResult;
   return (
     <group {...props} dispose={null}>
@@ -54,4 +56,4 @@ export function Crown(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("/models/crown/fall_guys_crown.glb");
+useGLTF.preload(`${baseUrl}/models/crown/fall_guys_crown.glb`);

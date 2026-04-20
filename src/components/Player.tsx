@@ -4,7 +4,7 @@ import {
   RigidBody,
   useRapier,
 } from "@react-three/rapier";
-import PlayerModel from "./PlayerModel.tsx";
+import PlayerModel from "./assets/PlayerModel.tsx";
 import { useEffect, useRef, useState } from "react";
 import { useKeyboardControls } from "@react-three/drei";
 

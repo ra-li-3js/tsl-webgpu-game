@@ -59,6 +59,8 @@ type GeneralActionName =
 // type GLTFActions = Record<GeneralActionName, THREE.AnimationAction>
 // type GLTFActions = Record<MovementActionName, THREE.AnimationAction>;
 
+const baseUrl = import.meta.env.BASE_URL;
+
 const PlayerModel = (
   props: JSX.IntrinsicElements["group"],
   shadow: boolean = true,
@@ -72,14 +74,14 @@ const PlayerModel = (
   const isJumping = useKeyboardControls((state) => state.jump);
 
   const { nodes, materials } = useGLTF(
-    "/models/player/Mannequin_Medium.glb",
+    `${baseUrl}/models/player/Mannequin_Medium.glb`,
   ) as unknown as GLTFResult;
 
   const { animations: movementAnims } = useGLTF(
-    "/models/player/Rig_Medium_MovementBasic.glb",
+    `${baseUrl}/models/player/Rig_Medium_MovementBasic.glb`,
   );
   const { animations: generalAnims } = useGLTF(
-    "/models/player/Rig_Medium_General.glb",
+    `${baseUrl}/models/player/Rig_Medium_General.glb`,
   );
 
   const animations = [...movementAnims, ...generalAnims];
@@ -156,8 +158,8 @@ const PlayerModel = (
   );
 };
 
-useGLTF.preload("/models/player/Mannequin_Medium.glb");
-useGLTF.preload("/models/player/Rig_Medium_MovementBasic.glb");
-useGLTF.preload("/models/player/Rig_Medium_General.glb");
+useGLTF.preload(`${baseUrl}/models/player/Mannequin_Medium.glb`);
+useGLTF.preload(`${baseUrl}/models/player/Rig_Medium_MovementBasic.glb`);
+useGLTF.preload(`${baseUrl}/models/player/Rig_Medium_General.glb`);
 
 export default PlayerModel;
