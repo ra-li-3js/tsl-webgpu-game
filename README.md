@@ -29,6 +29,17 @@ From `KeyboardControls` in `src/Experience.tsx`:
 
 Any of these key press starts the run changing the game phase to `ready`.
 
+## Physics
+The game's physics are powered by `@react-three/rapier` to handle collisions, moving obstacles, and player interactions.
+
+- Fixed platforms: Safe zones and the base ground (`BlockStart`, `BlockEnd`) use `type={"fixed"}` rigid bodies to provide solid, immovable surfaces.
+- Kinematic obstacles: The moving walls and spinners (`BlockSpinner`, `BlockLimbo`, `BlockAxe`) use `type={"kinematicPosition"}`. They push the player but ignore forces like gravity, with their movement animated every frame via `setNextKinematicTranslation` or `setNextKinematicRotation`.
+- Friction (Grip): The spinning obstacle in `BlockSpinner` is configured with high friction (`friction={1.2}`) so that when the player makes contact, they are gripped and pulled along with the rotation.
+- Restitution (Bounciness): The swinging wall in `BlockAxe` is configured with high restitution (`restitution={2.2}`) so it acts like a spring, aggressively knocking the player back upon impact.
+- Complex hitboxes: The finish marker (`Crown`) uses `colliders={"trimesh"}` so the physical boundaries perfectly match the 3D model's vertices instead of using basic primitive shapes.
+- Physics debugging: You can toggle the visibility of all colliders on or off by passing the `debug` parameter to the main `<Physics>` component.
+-And of course, with the classical gravity, you have to be skillful so that the player doesn't fall in the lava.
+
 ## URL Query Flags
 
 Defined in `src/components/WebGPUCanvas.tsx`:
