@@ -16,7 +16,7 @@ interface GameState {
 const useGame = create<GameState>()(
   subscribeWithSelector((set) => {
     return {
-      blocksCount: 20,
+      blocksCount: 10,
       blockSeed: 2,
       startTime: 0,
       endTime: 0,
