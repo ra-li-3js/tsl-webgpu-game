@@ -109,15 +109,16 @@ export const fragmentShader = /*@__PURE__*/ Fn(
     holographic.addAssign(fresnel.mul(1.25));
     holographic.mulAssign(falloff);
 
+    // Was it too hard to see???
+    holographic.addAssign(0.001);
+
     // Final color
 
     // Base
-    const baseColor = uColor.mul(0.4).toVar();
-
-    vec3(uColor).addAssign(baseColor);
+    const finalColor = uColor.mul(1.4);
 
     // gl_FragColor.assign(vec4(vec3(uColor), holographic));
-    return vec4(vec3(uColor), holographic);
+    return vec4(finalColor, holographic);
   },
   // { return: "void" },
 );

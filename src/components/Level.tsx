@@ -18,7 +18,9 @@ import { Crown } from "./assets/Crown.tsx";
 import { mulberry32 } from "../utils.ts";
 import LavaFloor from "./LavaFloor.tsx";
 
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 16);
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 1);
+const smallWallGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 16);
+const wallGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 32);
 
 // const floor1Material = new THREE.MeshStandardMaterial({ color: "limegreen" });
 // const floor2Material = new THREE.MeshStandardMaterial({ color: "greenyellow" });
@@ -88,7 +90,7 @@ function BlockSpinner({ position = [0, 0, 0] }: BlockProps) {
   return (
     <>
       <group position={position}>
-        <RigidBody type={"fixed"} restitution={0.2} friction={0}>
+        {/*        <RigidBody type={"fixed"} restitution={0.2} friction={0}>
           <mesh
             // geometry={boxGeometry}
             material={glassMaterial}
@@ -98,18 +100,18 @@ function BlockSpinner({ position = [0, 0, 0] }: BlockProps) {
           >
             <RoundedBoxGeometry />
           </mesh>
-        </RigidBody>
+        </RigidBody>*/}
         <RigidBody
           ref={obstacle}
           type={"kinematicPosition"}
-          position={[0, 0.3, 0]}
-          restitution={0.2}
-          friction={0}
+          position={[0, 0.2, 0]}
+          restitution={0}
+          friction={1.2}
         >
           <mesh
-            geometry={boxGeometry}
+            geometry={smallWallGeometry}
             material={holographicMaterial}
-            scale={[3.5, 0.3, 0.3]}
+            scale={[3.5, 0.3, 1]}
             castShadow
             receiveShadow
           />
@@ -137,7 +139,7 @@ function BlockLimbo({ position = [0, 0, 0] }: BlockProps) {
   });
   return (
     <group position={position}>
-      <RigidBody type={"fixed"} restitution={0.2} friction={0}>
+      <RigidBody type={"fixed"} restitution={0} friction={0}>
         <mesh
           // geometry={boxGeometry}
           material={glassMaterial}
@@ -152,11 +154,11 @@ function BlockLimbo({ position = [0, 0, 0] }: BlockProps) {
         ref={obstacle}
         type={"kinematicPosition"}
         position={[0, 0.3, 0]}
-        restitution={0.2}
+        restitution={1.2}
         friction={0}
       >
         <mesh
-          geometry={boxGeometry}
+          geometry={smallWallGeometry}
           material={holographicMaterial}
           scale={[3.5, 0.3, 0.3]}
           castShadow
@@ -186,7 +188,7 @@ function BlockAxe({ position = [0, 0, 0] }: BlockProps) {
   });
   return (
     <group position={position}>
-      <RigidBody type={"fixed"} restitution={0.2} friction={0}>
+      <RigidBody type={"fixed"} restitution={0} friction={0}>
         <mesh
           // geometry={boxGeometry}
           material={glassMaterial}
@@ -201,11 +203,11 @@ function BlockAxe({ position = [0, 0, 0] }: BlockProps) {
         ref={obstacle}
         type={"kinematicPosition"}
         position={[0, 0.3, 0]}
-        restitution={0.2}
+        restitution={2.2}
         friction={0}
       >
         <mesh
-          geometry={boxGeometry}
+          geometry={wallGeometry}
           material={holographicMaterial}
           scale={[1.5, 1.5, 0.3]}
           castShadow
