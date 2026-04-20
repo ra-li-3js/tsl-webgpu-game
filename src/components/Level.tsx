@@ -16,6 +16,7 @@ import {
 } from "./shaders/holographic.ts";
 import { Crown } from "./assets/Crown.tsx";
 import { mulberry32 } from "../utils.ts";
+import LavaFloor from "./LavaFloor.tsx";
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 16);
 
@@ -289,6 +290,8 @@ const Level = ({
       ))}
 
       <BlockEnd position={[0, 0, -(count + 1) * 4]} />
+
+      <LavaFloor />
     </>
   );
 };
