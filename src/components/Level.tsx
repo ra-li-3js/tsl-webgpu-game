@@ -13,7 +13,7 @@ import { vertexShader as baseVertexShader } from "./shaders/base.ts";
 import {
   vertexShader as holographicVertexShader,
   fragmentShader as holographicFragmentShader,
-} from "./shaders/holographic.ts";
+} from "./shaders/Holographic.ts";
 import { Crown } from "./assets/Crown.tsx";
 import { mulberry32 } from "../utils.ts";
 import LavaFloor from "./LavaFloor.tsx";
