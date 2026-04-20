@@ -17,7 +17,7 @@ const useGame = create<GameState>()(
   subscribeWithSelector((set) => {
     return {
       blocksCount: 20,
-      blockSeed: 0,
+      blockSeed: 2,
       startTime: 0,
       endTime: 0,
       phase: "ready",

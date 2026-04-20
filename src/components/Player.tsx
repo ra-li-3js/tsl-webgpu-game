@@ -112,26 +112,34 @@ const Player = () => {
     // console.log(getKeys());
 
     const currentVel = body.current.linvel();
-    const targetVel = new THREE.Vector3(0, currentVel.y, 0);
-    const speed = 3;
+    // const targetVel = new THREE.Vector3(0, currentVel.y, 0);
+    // const speed = 3;
+
+    const impulse = new THREE.Vector3(0, 0, 0);
+    const accel = 5 * delta;
 
     if (forward) {
-      targetVel.z -= speed;
+      // targetVel.z -= speed;
+      impulse.z -= accel;
     }
     if (rightward) {
-      targetVel.x += speed;
+      // targetVel.x += speed;
+      impulse.x += accel;
     }
     if (backward) {
-      targetVel.z += speed;
+      // targetVel.z += speed;
+      impulse.z += accel;
     }
     if (leftward) {
-      targetVel.x -= speed;
+      // targetVel.x -= speed;
+      impulse.x -= accel;
     }
 
-    body.current.setLinvel(targetVel, true);
+    // body.current.setLinvel(targetVel, true);
+    body.current.applyImpulse(impulse, true);
 
     if (forward || backward || leftward || rightward) {
-      const angle = Math.atan2(targetVel.x, targetVel.z);
+      const angle = Math.atan2(currentVel.x, currentVel.z);
       targetRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), angle);
       modelRef.current?.quaternion.slerp(targetRotation, 15 * delta);
     }
@@ -157,11 +165,11 @@ const Player = () => {
     state.camera.lookAt(smoothedCameraTarget);
 
     // PHASES
-    if (bodyPosition.z < -(blocksCount * 4 + 2))
+    if (bodyPosition.z < -(blocksCount * 4 + 2) && bodyPosition.y > -3)
       // console.log("We are at the end");
       end();
 
-    if (bodyPosition.y < -4) restart();
+    if (bodyPosition.y < -10) restart();
   });
   return (
     <>
@@ -171,7 +179,8 @@ const Player = () => {
         colliders={false}
         enabledRotations={[false, false, false]}
         restitution={0.2}
-        friction={0}
+        friction={0.2}
+        linearDamping={2.5}
         position={[0, 1, 0]}
       >
         <group ref={modelRef} rotation={[0, Math.PI, 0]}>
