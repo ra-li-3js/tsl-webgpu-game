@@ -2,6 +2,12 @@ import { useEffect, useRef } from "react";
 import useGame from "./stores/useGame.ts";
 import { useKeyboardControls } from "@react-three/drei";
 import { addEffect } from "@react-three/fiber";
+import {
+  ArrowUpIcon,
+  ArrowDownIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "@phosphor-icons/react";
 
 const Interface = () => {
   const time = useRef<HTMLDivElement | null>(null);
@@ -14,6 +20,11 @@ const Interface = () => {
   const leftward = useKeyboardControls((state) => state.leftward);
   const rightward = useKeyboardControls((state) => state.rightward);
   const jump = useKeyboardControls((state) => state.jump);
+
+  const simulateKey = (code: string, type: "keydown" | "keyup") => {
+    const event = new KeyboardEvent(type, { code, key: code });
+    window.dispatchEvent(event);
+  };
 
   useEffect(() => {
     const unsubscribeEffect = addEffect(() => {
@@ -40,6 +51,7 @@ const Interface = () => {
       unsubscribeEffect();
     };
   }, []);
+
   return (
     <div className="interface">
       <div ref={time} className="time">
@@ -55,19 +67,61 @@ const Interface = () => {
       <div className="controls">
         <div className="key-wrapper">
           <div className="raw">
-            <div className={`key ${forward ? "active" : ""}`}></div>
+            <div
+              className={`key ${forward ? "active" : ""}`}
+              onPointerDown={() => simulateKey("ArrowUp", "keydown")}
+              onPointerUp={() => simulateKey("ArrowUp", "keyup")}
+              onPointerLeave={() => simulateKey("ArrowUp", "keyup")}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <ArrowUpIcon size="100%" color={forward ? "red" : undefined} />
+            </div>
           </div>
           <div className="raw">
-            <div className={`key ${leftward ? "active" : ""}`}></div>
-            <div className={`key ${backward ? "active" : ""}`}></div>
-            <div className={`key ${rightward ? "active" : ""}`}></div>
+            <div
+              className={`key ${leftward ? "active" : ""}`}
+              onPointerDown={() => simulateKey("ArrowLeft", "keydown")}
+              onPointerUp={() => simulateKey("ArrowLeft", "keyup")}
+              onPointerLeave={() => simulateKey("ArrowLeft", "keyup")}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <ArrowLeftIcon size="100%" color={leftward ? "red" : undefined} />
+            </div>
+            <div
+              className={`key ${backward ? "active" : ""}`}
+              onPointerDown={() => simulateKey("ArrowDown", "keydown")}
+              onPointerUp={() => simulateKey("ArrowDown", "keyup")}
+              onPointerLeave={() => simulateKey("ArrowDown", "keyup")}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <ArrowDownIcon size="100%" color={backward ? "red" : undefined} />
+            </div>
+            <div
+              className={`key ${rightward ? "active" : ""}`}
+              onPointerDown={() => simulateKey("ArrowRight", "keydown")}
+              onPointerUp={() => simulateKey("ArrowRight", "keyup")}
+              onPointerLeave={() => simulateKey("ArrowRight", "keyup")}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <ArrowRightIcon
+                size="100%"
+                color={rightward ? "red" : undefined}
+              />
+            </div>
           </div>
           <div className="raw">
-            <div className={`key ${jump ? "active" : ""} large`}></div>
+            <div
+              className={`key ${jump ? "active" : ""} large`}
+              onPointerDown={() => simulateKey("Space", "keydown")}
+              onPointerUp={() => simulateKey("Space", "keyup")}
+              onPointerLeave={() => simulateKey("Space", "keyup")}
+              onContextMenu={(e) => e.preventDefault()}
+            ></div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Interface;

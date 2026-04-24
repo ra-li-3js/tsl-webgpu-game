@@ -38,12 +38,12 @@ const Player = () => {
 
     const origin = body.current.translation();
     // console.log(origin);
-    origin.y -= 0.61;
+    origin.y -= 0.31;
     const direction = { x: 0, y: -1, z: 0 };
     const ray = new rapier.Ray(origin, direction);
     const hit = world.castRay(
       ray,
-      0.2,
+      0.3,
       true,
       undefined,
       undefined,
@@ -52,7 +52,7 @@ const Player = () => {
     );
     // console.log(hit);
 
-    if (hit && hit.timeOfImpact < 0.15) {
+    if (hit && hit.timeOfImpact < 0.3) {
       const currentVel = body.current.linvel();
       body.current.setLinvel({ x: currentVel.x, y: 4, z: currentVel.z }, true);
     }
@@ -169,7 +169,7 @@ const Player = () => {
       // console.log("We are at the end");
       end();
 
-    if (bodyPosition.y < -10) restart();
+    if (bodyPosition.y < -5) restart();
   });
   return (
     <>
@@ -178,7 +178,7 @@ const Player = () => {
         canSleep={false}
         colliders={false}
         enabledRotations={[false, false, false]}
-        restitution={0.2}
+        restitution={0.0}
         friction={0.2}
         linearDamping={2.5}
         position={[0, 1, 0]}

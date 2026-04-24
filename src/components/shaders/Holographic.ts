@@ -110,7 +110,7 @@ export const fragmentShader = /*@__PURE__*/ Fn(
     holographic.mulAssign(falloff);
 
     // Was it too hard to see???
-    holographic.addAssign(0.001);
+    holographic.addAssign(0.002);
 
     // Final color
 
