@@ -78,7 +78,7 @@ export default function LavaFloor({ deepOpacityOverride }: LavaFloorProps) {
       ref={meshRef}
       material={material}
       rotation-x={-Math.PI / 2}
-      position={[0, -10, 0]}
+      position={[0, -7, 0]}
       frustumCulled={true}
       renderOrder={2}
     >

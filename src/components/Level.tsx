@@ -106,7 +106,7 @@ function BlockSpinner({ position = [0, 0, 0] }: BlockProps) {
           type={"kinematicPosition"}
           position={[0, 0.2, 0]}
           restitution={0}
-          friction={1.2}
+          friction={0.2}
         >
           <mesh
             geometry={smallWallGeometry}
